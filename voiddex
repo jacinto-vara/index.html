@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minha Loja Online</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Bem-vindo à Minha Loja Online</h1>
+        <p>Os melhores produtos do seu curso estão aqui!</p>
+    </header>
+
+    <section id="produtos">
+        <h2>Produtos em Destaque</h2>
+        <div class="produto" data-id="1" data-preco="29.99">
+            <h3>Curso Completo de Marketing Digital</h3>
+            <img src="curso-marketing.jpg" alt="Curso Marketing Digital">
+            <p>Preço: R$29,99</p>
+            <button onclick="adicionarAoCarrinho(1)">Adicionar ao Carrinho</button>
+        </div>
+        <div class="produto" data-id="2" data-preco="49.99">
+            <h3>Curso de Redes Sociais</h3>
+            <img src="curso-redes.jpg" alt="Curso Redes Sociais">
+            <p>Preço: R$49,99</p>
+            <button onclick="adicionarAoCarrinho(2)">Adicionar ao Carrinho</button>
+        </div>
+    </section>
+
+    <section id="carrinho">
+        <h2>Carrinho de Compras</h2>
+        <div id="itens-carrinho"></div>
+        <p>Total: R$<span id="total">0.00</span></p>
+        <button id="finalizar-compra">Finalizar Compra</button>
+    </section>
+
+    <script src="scripts.js"></script>
+</body>
+</html>
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+}
+
+#produtos {
+    margin: 20px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.produto {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+}
+
+.produto img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+button {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #218838;
+}
+
+#carrinho {
+    margin: 20px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#total {
+    font-weight: bold;
+    font-size: 1.5em;
+}
+let carrinho = [];
+let total = 0;
+
+const produtos = [
+    { id: 1, nome: 'Curso Completo de Marketing Digital', preco: 29.99 },
+    { id: 2, nome: 'Curso de Redes Sociais', preco: 49.99 }
+];
+
+function adicionarAoCarrinho(produtoId) {
+    const produto = produtos.find(p => p.id === produtoId);
+    carrinho.push(produto);
+    total += produto.preco;
+
+    atualizarCarrinho();
+}
+
+function atualizarCarrinho() {
+    const carrinhoContainer = document.getElementById('itens-carrinho');
+    carrinhoContainer.innerHTML = ''; // Limpa o conteúdo anterior
+
+    carrinho.forEach((produto, index) => {
+        const item = document.createElement('div');
+        item.textContent = `${produto.nome} - R$${produto.preco.toFixed(2)}`;
+        carrinhoContainer.appendChild(item);
+    });
+
+    document.getElementById('total').textContent = total.toFixed(2);
+}
+
+document.getElementById('finalizar-compra').addEventListener('click', () => {
+    if (carrinho.length === 0) {
+        alert('Seu carrinho está vazio!');
+    } else {
+        alert(`Compra finalizada! Total: R$${total.toFixed(2)}`);
+        carrinho = [];
+        total = 0;
+        atualizarCarrinho();
+    }
+});
